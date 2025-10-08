@@ -1,0 +1,25 @@
+# E-commerce Backend API
+
+A TypeScript/Express/Prisma e-commerce API with production issues to investigate and resolve.
+
+## Important Notes
+
+- This codebase has several production issues that need investigation
+- Issues are described in README.md (no bug labels in code)
+- For senior/staff level technical interviews
+
+## Code Standards
+
+- Use TypeScript with strict mode
+- Follow RESTful API conventions
+- Use Prisma for database operations
+- Imports at the top of files
+- Use standard libraries and good coding patterns
+
+## Development
+
+- Database should be dockerized (PostgreSQL)
+- Backend runs directly (not in Docker)
+- Use `npm run dev` for development
+- Use `npm run db:seed` to reset test data
+
