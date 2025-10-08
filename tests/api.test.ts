@@ -2,6 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import cors from 'cors';
 import fs from 'fs/promises';
+import path from 'path';
 import prisma from '../src/db/prisma';
 import productsRouter from '../src/routes/products';
 import ordersRouter from '../src/routes/orders';
@@ -96,7 +97,7 @@ async function testBug1() {
   info(`Retrieved ${res.body?.length || 0} orders with ${res.body?.[0]?.items?.length || 0} items`);
   
   logTest('Code must use Prisma include (not loops)');
-  const code = await fs.readFile('/Users/andrewspencer/lumena/backend-debug-interview/src/routes/orders.ts', 'utf-8');
+  const code = await fs.readFile(path.resolve(__dirname, '../src/routes/orders.ts'), 'utf-8');
   code.includes('for (const order of orders)') ? fail('Uses loop - N+1 bug!', 'Use include: { items: { include: { product: true } } }') : pass('Uses include');
 }
 
@@ -140,7 +141,7 @@ async function testBug3() {
   info(`Import status: ${res.status}, count: ${res.body?.count}`);
 
   logTest('Code must use createMany (not loop)');
-  const code = await fs.readFile('/Users/andrewspencer/lumena/backend-debug-interview/src/routes/admin.ts', 'utf-8');
+  const code = await fs.readFile(path.resolve(__dirname, '../src/routes/admin.ts'), 'utf-8');
   code.includes('for (let i = 0') ? fail('Uses loop!', 'Use prisma.product.createMany') : pass('Uses createMany');
 }
 
@@ -171,7 +172,7 @@ async function testBug4() {
   final?.inventory === 0 ? pass('Inventory at 0') : fail(`Inventory at ${final?.inventory}`, 'Incorrect tracking');
 
   logTest('Code must use transactions');
-  const code = await fs.readFile('/Users/andrewspencer/lumena/backend-debug-interview/src/routes/orders.ts', 'utf-8');
+  const code = await fs.readFile(path.resolve(__dirname, '../src/routes/orders.ts'), 'utf-8');
   code.includes('$transaction') ? pass('Uses transactions') : fail('No transactions!', 'Wrap in prisma.$transaction');
 
   await prisma.orderItem.deleteMany({ where: { productId: product.id } });
@@ -219,7 +220,7 @@ async function testBug6() {
   info(`Report status: ${res.status}`);
 
   logTest('Code must be async with setImmediate');
-  const code = await fs.readFile('/Users/andrewspencer/lumena/backend-debug-interview/src/routes/reports.ts', 'utf-8');
+  const code = await fs.readFile(path.resolve(__dirname, '../src/routes/reports.ts'), 'utf-8');
   code.includes('for (let i = 0; i < 100000') ? 
     fail('Has blocking CPU loop!', 'Make async and use setImmediate') : 
     pass('Code is async');

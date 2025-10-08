@@ -32,12 +32,26 @@ app.use((req: Request, res: Response) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Database: ${process.env.DATABASE_URL ? 'Connected' : 'No DATABASE_URL set'}`);
-});
+// Start server with automatic port fallback
+function startServer(port: number) {
+  const server = app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Database: ${process.env.DATABASE_URL ? 'Connected' : 'No DATABASE_URL set'}`);
+  });
+
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is in use, trying port ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Server error:', err);
+      process.exit(1);
+    }
+  });
+}
+
+startServer(Number(PORT));
 
 // Graceful shutdown
 process.on('SIGINT', async () => {

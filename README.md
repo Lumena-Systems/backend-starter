@@ -5,13 +5,13 @@ A TypeScript/Express/Prisma e-commerce API with production performance and relia
 ## Quick Start
 
 ```bash
-npm install
-npm run db:migrate
-npm run db:seed
+npm run setup
 npm run dev
 ```
 
 Server: `http://localhost:3000`
+
+The `setup` command will install dependencies, run migrations, and seed the database.
 
 ## Production Issues
 
@@ -92,33 +92,6 @@ This codebase has several performance and reliability issues that need investiga
 
 **Reports**
 - `GET /reports/orders/:userId` - Generate order report
-
-## Development Tools
-
-**Query Logging**
-```bash
-DEBUG=prisma:query npm run dev
-```
-
-**Database GUI**
-```bash
-npm run db:studio
-```
-
-**Reset Database**
-```bash
-npm run db:reset
-```
-
-**Run Tests**
-```bash
-npm run test
-```
-
-**Note**: Tests run standalone (no server needed). In the default state:
-- **All 16 tests will FAIL** ✗ (bugs present)
-- As you fix bugs, corresponding tests will **PASS** ✓
-- When all bugs are fixed, all 16 tests will pass
 
 ## Test Data
 

@@ -86,6 +86,7 @@ function generatePDFReport(user: any, orders: any[]): string {
 
     report += '\n';
 
+    //simulate a slow operation
     for (let i = 0; i < 100000; i++) {
       Math.sqrt(i) * Math.random();
     }
