@@ -1,13 +1,3 @@
--- ⚠️  BUGGY MIGRATION - DO NOT USE IN PRODUCTION ⚠️
-- This migration demonstrates a RISKY approach to splitting the User table
--- Issues:
--- 1. Requires application downtime
--- 2. Large transaction locks tables
--- 3. All-or-nothing (any error aborts everything)
--- 4. Hard to rollback
--- 5. No validation before switching
--- 6. Application code breaks immediately when run
-
 BEGIN;
 
 -- Step 1: Create new tables
