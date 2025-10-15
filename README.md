@@ -6,10 +6,7 @@ A TypeScript/Express/Prisma e-commerce API with production performance and relia
 
 ```bash
 npm run setup
-npm run dev
 ```
-
-Server: `http://localhost:3000`
 
 The `setup` command will install dependencies, run migrations, and seed the database.
 

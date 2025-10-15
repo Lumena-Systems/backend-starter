@@ -9,7 +9,6 @@ const router = Router();
 // Endpoint: GET /orders/:userId
 // Symptom: 5-10 second response times for users with many orders
 // Test user: heavy.user@example.com (120 orders)
-// Tool: Enable query logging with DEBUG=prisma:query npm run dev
 // ============================================================================
 
 /**
