@@ -61,7 +61,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 // Task: Review error handling and suggest improvements for better 
 //       developer/client experience
 // ============================================================================
-// BUG #5: API Design Review
+// BUG #4: API Design Review
 // ============================================================================
 // Endpoint: POST /products
 // Context: 20% of products have null descriptions; business wants 

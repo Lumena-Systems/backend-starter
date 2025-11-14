@@ -43,7 +43,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
 });
 
 // ============================================================================
-// BUG #4: Inventory Overselling Issue
+// BUG #3: Inventory Overselling Issue
 // ============================================================================
 // Endpoint: POST /orders/checkout
 // Symptom: Users report purchasing items that show as out of stock; 

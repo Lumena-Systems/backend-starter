@@ -25,29 +25,23 @@ This codebase has several performance and reliability issues that need investiga
 - **Test**: Send invalid data (missing fields, wrong types, etc.)
 - **Task**: Review error handling and suggest improvements for better developer/client experience
 
-### 3. Import Performance  
-- **Endpoint**: `POST /admin/products/import`
-- **Symptom**: Takes minutes to import 1,000 products
-- **Test**: `node tests/generate-bulk-import.js 1000 > test.json && time curl -X POST http://localhost:3000/admin/products/import -H "Content-Type: application/json" -d @test.json`
-- **Expected**: < 2 seconds for 1,000 products
-
-### 4. Inventory Overselling Issue
+### 3. Inventory Overselling Issue
 - **Endpoint**: `POST /orders/checkout`  
 - **Symptom**: Users report purchasing items that show as out of stock; inventory occasionally goes negative
 - **Test**: Run `./tests/test-concurrent-checkouts.sh` to simulate busy traffic
 - **Expected**: Inventory never goes negative, orders fail gracefully when stock is insufficient
 
-### 5. API Design Review
+### 4. API Design Review
 - **Endpoints**: `POST /products` 
 - **Context**: 20% of products have null descriptions; business wants descriptions required for all new products
 - **Task**: Review the current implementation approach and provide feedback on the strategy, including improvements and considerations for long-term maintainability
 
-### 6. Report Generation Review
+### 5. Report Generation Review
 - **Endpoint**: `GET /reports/orders/:userId`
 - **Symptom**: Server becomes unresponsive when generating reports (test with health check endpoint during report generation)
 - **Task**: Review the report generation implementation and identify challenges, propose solutions for improving server behavior
 
-### 7. Database Schema Evolution Strategy
+### 6. Database Schema Evolution Strategy
 - **Location**: `prisma/migrations/BUGGY-split-users-migration.sql`
 - **Context**: Business wants to split the `User` table into separate `Customer` and `Merchant` tables because the app now serves both user types with different fields and permissions
 - **Current State**: Single `User` table with `userType` field ('customer' or 'merchant'); Orders reference `userId`
@@ -55,7 +49,7 @@ This codebase has several performance and reliability issues that need investiga
 - **Challenge**: A migration file has been drafted but needs review
 - **Task**: Review the provided migration approach
 
-### 8. Production Debugging & Observability
+### 7. Production Debugging & Observability
 - **Context**: The application is experiencing several production issues:
   - Checkout endpoint sporadically takes 15+ seconds (usually 2 seconds)
   - Product search occasionally returns 500 errors

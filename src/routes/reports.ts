@@ -4,7 +4,7 @@ import prisma from '../db/prisma';
 const router = Router();
 
 // ============================================================================
-// BUG #6: Report Generation Review
+// BUG #5: Report Generation Review
 // ============================================================================
 // Endpoint: GET /reports/orders/:userId
 // Symptom: Server becomes unresponsive when generating reports (test with 

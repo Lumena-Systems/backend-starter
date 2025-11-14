@@ -3,17 +3,6 @@ import prisma from '../db/prisma';
 
 const router = Router();
 
-// ============================================================================
-// BUG #3: Import Performance
-// ============================================================================
-// Endpoint: POST /admin/products/import
-// Symptom: Takes minutes to import 1,000 products
-// Test: node tests/generate-bulk-import.js 1000 > test.json && 
-//       time curl -X POST http://localhost:3000/admin/products/import 
-//       -H "Content-Type: application/json" -d @test.json
-// Expected: < 2 seconds for 1,000 products
-// ============================================================================
-
 /**
  * POST /admin/products/import
  * Bulk imports multiple products into the catalog.
