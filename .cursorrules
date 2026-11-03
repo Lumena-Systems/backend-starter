@@ -12,7 +12,7 @@ A TypeScript/Express/Prisma e-commerce API with production issues to investigate
 
 - Use TypeScript with strict mode
 - Follow RESTful API conventions
-- Use Prisma for database operations
+- Use Prisma for database operations, with raw SQL (`prisma.$queryRaw` / `prisma.$executeRaw`) in the routes under review
 - Imports at the top of files
 - Use standard libraries and good coding patterns
 

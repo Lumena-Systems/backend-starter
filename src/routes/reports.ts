@@ -1,7 +1,15 @@
 import { Router, Request, Response } from 'express';
+import { Order, OrderItem, User } from '@prisma/client';
 import prisma from '../db/prisma';
 
 const router = Router();
+
+// prisma.$queryRaw / prisma.$executeRaw run the SQL as written; ${...} values are sent as bound parameters.
+
+type ReportItem = OrderItem & {
+  productName: string;
+  productDescription: string | null;
+};
 
 // ============================================================================
 // BUG #5: Report Generation Review
@@ -22,21 +30,32 @@ const router = Router();
 router.get('/orders/:userId', async (req: Request, res: Response) => {
   const { userId } = req.params;
 
-  const orders = await prisma.order.findMany({
-    where: { userId },
-    include: {
-      items: {
-        include: {
-          product: true,
-        },
-      },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  const rows = await prisma.$queryRaw<Order[]>`
+    SELECT * FROM orders
+    WHERE userId = ${userId}
+    ORDER BY createdAt DESC
+  `;
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-  });
+  const items = await prisma.$queryRaw<ReportItem[]>`
+    SELECT
+      order_items.*,
+      products.name AS productName,
+      products.description AS productDescription
+    FROM order_items
+    JOIN orders ON orders.id = order_items.orderId
+    JOIN products ON products.id = order_items.productId
+    WHERE orders.userId = ${userId}
+  `;
+
+  const orders = rows.map((order) => ({ ...order, items: [] as ReportItem[] }));
+  const ordersById = new Map(orders.map((order) => [order.id, order]));
+  for (const item of items) {
+    ordersById.get(item.orderId)?.items.push(item);
+  }
+
+  const [user] = await prisma.$queryRaw<User[]>`
+    SELECT * FROM users WHERE id = ${userId}
+  `;
 
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
@@ -75,11 +94,11 @@ function generatePDFReport(user: any, orders: any[]): string {
     report += '-'.repeat(40) + '\n';
 
     for (const item of order.items) {
-      const itemLine = `  ${item.quantity}x ${item.product.name} @ $${item.price} = $${Number(item.price) * item.quantity}`;
+      const itemLine = `  ${item.quantity}x ${item.productName} @ $${item.price} = $${Number(item.price) * item.quantity}`;
       report += itemLine + '\n';
       
-      if (item.product.description) {
-        const description = item.product.description.substring(0, 50);
+      if (item.productDescription) {
+        const description = item.productDescription.substring(0, 50);
         report += `    ${description}...\n`;
       }
     }

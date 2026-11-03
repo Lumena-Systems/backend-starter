@@ -1,7 +1,11 @@
+import { randomUUID } from 'crypto';
 import { Router, Request, Response } from 'express';
+import { Product } from '@prisma/client';
 import prisma from '../db/prisma';
 
 const router = Router();
+
+// prisma.$queryRaw / prisma.$executeRaw run the SQL as written; ${...} values are sent as bound parameters.
 
 /**
  * GET /products
@@ -81,18 +85,15 @@ router.post('/', async (req: Request, res: Response) => {
   const { name, description, price, inventory } = req.body;
 
   try {
-    const product = await prisma.product.create({
-      data: {
-        name,
-        description,
-        price,
-        inventory,
-      },
-    });
+    const [product] = await prisma.$queryRaw<Product[]>`
+      INSERT INTO products (id, name, description, price, inventory, createdAt)
+      VALUES (${randomUUID()}, ${name}, ${description}, ${price}, ${inventory}, ${Date.now()})
+      RETURNING *
+    `;
 
     res.status(201).json(product);
   } catch (error) {
-    // Returning raw Prisma error to client
+    // Returning raw database error to client
     res.status(500).json({ error });
   }
 });
