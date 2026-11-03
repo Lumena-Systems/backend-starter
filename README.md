@@ -5,10 +5,10 @@ A TypeScript/Express/Prisma e-commerce API with production performance and relia
 ## Quick Start
 
 ```bash
-npm run setup
+npm i
 ```
 
-The `setup` command will install dependencies, run migrations, and seed the database.
+This only installs types so that your editor extensions work. There's no need to seed the database or set anything else up.
 
 ## Production Issues
 
@@ -16,19 +16,16 @@ This codebase has several performance and reliability issues that need investiga
 
 ### 1. Slow Order Queries
 - **Endpoint**: `GET /orders/:userId`
-- **Symptom**: 5-10 second response times for users with many orders
-- **Test user**: `heavy.user@example.com` (120 orders)
+- **Symptom**: 5-10 second response times for users with many orders (e.g. 120)
 
 ### 2. Product Creation Error Handling
 - **Endpoint**: `POST /products`
-- **Symptom**: Error messages inconsistent, sometimes unclear to clients
-- **Test**: Send invalid data (missing fields, wrong types, etc.)
+- **Symptom**: Error messages inconsistent, sometimes unclear to clients when sent invalid data (missing fields, wrong types, etc.)
 - **Task**: Review error handling and suggest improvements for better developer/client experience
 
 ### 3. Inventory Overselling Issue
 - **Endpoint**: `POST /orders/checkout`  
 - **Symptom**: Users report purchasing items that show as out of stock; inventory occasionally goes negative
-- **Test**: Run `./tests/test-concurrent-checkouts.sh` to simulate busy traffic
 - **Expected**: Inventory never goes negative, orders fail gracefully when stock is insufficient
 
 ### 4. API Design Review
@@ -38,7 +35,7 @@ This codebase has several performance and reliability issues that need investiga
 
 ### 5. Report Generation Review
 - **Endpoint**: `GET /reports/orders/:userId`
-- **Symptom**: Server becomes unresponsive when generating reports (test with health check endpoint during report generation)
+- **Symptom**: Server becomes unresponsive when generating reports, including the health check endpoint
 - **Task**: Review the report generation implementation and identify challenges, propose solutions for improving server behavior
 
 ### 6. Database Schema Evolution Strategy
@@ -82,12 +79,6 @@ This codebase has several performance and reliability issues that need investiga
 
 **Reports**
 - `GET /reports/orders/:userId` - Generate order report
-
-## Test Data
-
-- 100 products (20% with null descriptions, first 10 with low inventory)
-- 30 users including `heavy.user@example.com` with 120 orders
-- 200+ orders
 
 ## Tech Stack
 
