@@ -12,6 +12,39 @@ const router = Router();
 // ============================================================================
 // Endpoint: GET /orders/:userId
 // Symptom: 5-10 second response times for users with many orders (e.g. 120)
+//
+// Database schema (SQLite):
+//
+//   users
+//     id           TEXT      PRIMARY KEY
+//     email        TEXT      NOT NULL, UNIQUE
+//     name         TEXT      NOT NULL
+//     createdAt    DATETIME  NOT NULL, DEFAULT CURRENT_TIMESTAMP
+//
+//   products
+//     id           TEXT      PRIMARY KEY
+//     name         TEXT      NOT NULL, INDEXED
+//     description  TEXT      NULLABLE
+//     price        DECIMAL   NOT NULL
+//     inventory    INTEGER   NOT NULL
+//     createdAt    DATETIME  NOT NULL, DEFAULT CURRENT_TIMESTAMP
+//
+//   orders
+//     id           TEXT      PRIMARY KEY
+//     userId       TEXT      NOT NULL, INDEXED, REFERENCES users(id)
+//     status       TEXT      NOT NULL (pending, completed, cancelled)
+//     total        DECIMAL   NOT NULL
+//     createdAt    DATETIME  NOT NULL, INDEXED, DEFAULT CURRENT_TIMESTAMP
+//
+//   order_items
+//     id           TEXT      PRIMARY KEY
+//     orderId      TEXT      NOT NULL, INDEXED, REFERENCES orders(id)
+//     productId    TEXT      NOT NULL, INDEXED, REFERENCES products(id)
+//     quantity     INTEGER   NOT NULL
+//     price        DECIMAL   NOT NULL (price at time of purchase)
+//
+// A user has many orders, an order has many order_items, and each order_item 
+// references one product.
 // ============================================================================
 
 type OrderItemRow = OrderItem & {
