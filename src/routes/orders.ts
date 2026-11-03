@@ -7,8 +7,7 @@ const router = Router();
 // BUG #1: Slow Order Queries
 // ============================================================================
 // Endpoint: GET /orders/:userId
-// Symptom: 5-10 second response times for users with many orders
-// Test user: heavy.user@example.com (120 orders)
+// Symptom: 5-10 second response times for users with many orders (e.g. 120)
 // ============================================================================
 
 /**
@@ -48,7 +47,6 @@ router.get('/:userId', async (req: Request, res: Response) => {
 // Endpoint: POST /orders/checkout
 // Symptom: Users report purchasing items that show as out of stock; 
 //          inventory occasionally goes negative
-// Test: Run ./tests/test-concurrent-checkouts.sh to simulate busy traffic
 // Expected: Inventory never goes negative, orders fail gracefully when 
 //           stock is insufficient
 // ============================================================================

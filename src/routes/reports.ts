@@ -7,8 +7,8 @@ const router = Router();
 // BUG #5: Report Generation Review
 // ============================================================================
 // Endpoint: GET /reports/orders/:userId
-// Symptom: Server becomes unresponsive when generating reports (test with 
-//          health check endpoint during report generation)
+// Symptom: Server becomes unresponsive when generating reports, including 
+//          the health check endpoint
 // Task: Review the report generation implementation and identify challenges, 
 //       propose solutions for improving server behavior
 // ============================================================================

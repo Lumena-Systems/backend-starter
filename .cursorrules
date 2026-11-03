@@ -18,8 +18,5 @@ A TypeScript/Express/Prisma e-commerce API with production issues to investigate
 
 ## Development
 
-- Database should be dockerized (PostgreSQL)
-- Backend runs directly (not in Docker)
-- Use `npm run dev` for development
-- Use `npm run db:seed` to reset test data
+- Run `npm i` for types and editor extensions; no other setup is needed
 

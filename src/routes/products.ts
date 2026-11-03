@@ -56,8 +56,8 @@ router.get('/:id', async (req: Request, res: Response) => {
 // BUG #2: Product Creation Error Handling
 // ============================================================================
 // Endpoint: POST /products
-// Symptom: Error messages inconsistent, sometimes unclear to clients
-// Test: Send invalid data (missing fields, wrong types, etc.)
+// Symptom: Error messages inconsistent, sometimes unclear to clients when 
+//          sent invalid data (missing fields, wrong types, etc.)
 // Task: Review error handling and suggest improvements for better 
 //       developer/client experience
 // ============================================================================
